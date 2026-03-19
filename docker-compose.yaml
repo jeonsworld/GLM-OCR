@@ -1,0 +1,28 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: glm-ocr-ollama
+    volumes:
+      - ollama_data:/root/.ollama
+    ports:
+      - "11434:11434"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  glm-ocr:
+    build: .
+    container_name: glm-ocr-server
+    ports:
+      - "8511:8511"
+    volumes:
+      - ./config-ollama.yaml:/app/config-ollama.yaml
+    depends_on:
+      ollama:
+        condition: service_healthy
+    command: ["python", "-m", "glmocr.server", "--config", "/app/config-ollama.yaml"]
+
+volumes:
+  ollama_data:

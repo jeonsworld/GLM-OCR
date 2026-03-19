@@ -1,0 +1,32 @@
+server:
+  host: "0.0.0.0"
+  port: 8511
+  debug: false
+
+logging:
+  level: INFO
+
+pipeline:
+  maas:
+    enabled: false
+
+  ocr_api:
+    api_host: vllm
+    api_port: 8000
+    api_path: /v1/chat/completions
+    model: glm-ocr
+    api_mode: openai
+    verify_ssl: false
+    connect_timeout: 30
+    request_timeout: 300
+    connection_pool_size: 128
+
+  max_workers: 32
+  enable_layout: true
+
+  layout:
+    model_dir: PaddlePaddle/PP-DocLayoutV3_safetensors
+    threshold: 0.3
+    batch_size: 8
+    workers: 1
+    cuda_visible_devices: "0"
