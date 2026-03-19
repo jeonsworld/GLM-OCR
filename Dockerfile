@@ -9,8 +9,8 @@ RUN apt-get update && \
         git \
     && rm -rf /var/lib/apt/lists/*
 
-# Clone repository
-RUN git clone https://github.com/zai-org/GLM-OCR.git .
+# Copy local source
+COPY . .
 
 # Install CPU-only torch first, then package with all extras
 RUN pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu && \
