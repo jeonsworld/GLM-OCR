@@ -7,7 +7,7 @@ services:
     ports:
       - "11434:11434"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:11434/"]
+      test: ["CMD-SHELL", "ollama list || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -22,7 +22,7 @@ services:
     depends_on:
       ollama:
         condition: service_healthy
-    command: ["python", "-m", "glmocr.server", "--config", "/app/config-ollama.yaml"]
+    command: ["--config", "/app/config-ollama.yaml"]
 
 volumes:
   ollama_data:
